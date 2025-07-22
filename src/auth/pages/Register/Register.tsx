@@ -8,15 +8,14 @@ export const Register = () => {
   const navigate = useNavigate();
   const { startRegister } = useAuthStore();
 
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [contrasena, setContrasena] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await startRegister(name, email, password);
+      await startRegister(email, contrasena);
       navigate('/');
     } catch (error) {
       setErrorMsg('Error al registrarse');
@@ -28,13 +27,6 @@ export const Register = () => {
       <h2>Registrarse</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
-          type="text"
-          placeholder="Nombre"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
           type="email"
           placeholder="Correo"
           value={email}
@@ -44,8 +36,8 @@ export const Register = () => {
         <input
           type="password"
           placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
           required
         />
         {errorMsg && <p className={styles.error}>{errorMsg}</p>}

@@ -5,10 +5,10 @@ import { persist } from 'zustand/middleware';
 interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
-  user: { name: string; email: string } | null;
+  user: {  email: string } | null;
 
-  startLogin: (email: string, password: string) => Promise<void>;
-  startRegister: (name: string, email: string, password: string) => Promise<void>;
+  startLogin: (email: string, contrasena: string) => Promise<void>;
+  startRegister: (email: string, contrasena: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -19,12 +19,12 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       user: null,
 
-      startLogin: async (email, password) => {
+      startLogin: async (email, contrasena) => {
         try {
           const response = await fetch('http://localhost:9000/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, contrasena }),
           });
 
           if (!response.ok) throw new Error('Error al iniciar sesión');
@@ -33,19 +33,19 @@ export const useAuthStore = create<AuthState>()(
           set({
             token: data.token,
             isAuthenticated: true,
-            user: data.user, // { name, email }
+            user: { email }, 
           });
         } catch (error) {
           console.error('Login error:', error);
         }
       },
 
-      startRegister: async (name, email, password) => {
+      startRegister: async (email, contrasena) => {
         try {
           const response = await fetch('http://localhost:9000/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ email, contrasena }),
           });
 
           if (!response.ok) throw new Error('Error al registrarse');

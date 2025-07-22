@@ -9,13 +9,13 @@ export const Login = () => {
   const { startLogin } = useAuthStore();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [contrasena, setContrasena] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await startLogin(email, password);
+      await startLogin(email, contrasena);
       navigate('/');
     } catch (error) {
       setErrorMsg('Credenciales inválidas');
@@ -36,8 +36,8 @@ export const Login = () => {
         <input
           type="password"
           placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
           required
         />
         {errorMsg && <p className={styles.error}>{errorMsg}</p>}
