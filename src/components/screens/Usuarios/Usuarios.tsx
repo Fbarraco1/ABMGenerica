@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './Usuarios.module.css';
 import ModalUsuario from '../../ui/ModalUsuario/ModalUsuario'; // Asegúrate que la ruta sea correcta
+import { useAuthStore } from '../../../auth/store/authStore'; // Asegúrate de importar el store
 
 interface Usuario {
   id: number;
@@ -15,6 +16,7 @@ interface Usuario {
 export const Usuarios: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const token = useAuthStore((state) => state.token); // Obtén el token
 
   useEffect(() => {
     obtenerUsuarios();
@@ -31,7 +33,11 @@ export const Usuarios: React.FC = () => {
 
   const eliminarUsuario = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:9000/api/usuarios/${id}`);
+      await axios.delete(`http://localhost:9000/api/usuarios/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUsuarios((prev) => prev.filter((usuario) => usuario.id !== id));
     } catch (error) {
       console.error('Error al eliminar usuario:', error);

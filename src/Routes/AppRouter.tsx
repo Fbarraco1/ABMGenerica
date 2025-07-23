@@ -4,6 +4,7 @@ import { Login } from '../auth/pages/Login/Login';
 import { Register } from '../auth/pages/Register/Register';
 import { Dashboard } from '../components/screens/Dashboard/Dashboard';
 import { Usuarios } from '../components/screens/Usuarios/Usuarios';
+import { Beneficiarios } from '../components/screens/Beneficiarios/Beneficiarios';
 
 
 export const AppRouter = () => {
@@ -20,6 +21,8 @@ export const AppRouter = () => {
         <Route path="/register" element={<Register/>} />
         <Route path="/" element={<Dashboard/>} />
         <Route path="/usuarios" element={<Usuarios/>} />
+        <Route path="/beneficiarios" element={<Beneficiarios/>} />
+
 
 
 
