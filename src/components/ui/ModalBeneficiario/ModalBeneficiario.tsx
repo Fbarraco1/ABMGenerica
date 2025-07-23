@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useAuthStore } from '../../../auth/store/authStore'; 
 import styles from './modalBeneficiario.module.css';
+import axios from 'axios';
 
 interface ModalBeneficiarioProps {
   isOpen: boolean;
@@ -13,24 +15,33 @@ const ModalBeneficiario: React.FC<ModalBeneficiarioProps> = ({ isOpen, onClose, 
   const [dni, setDni] = useState('');
   const [cuil, setCuil] = useState('');
   const [telefono, setTelefono] = useState('');
+  const token = useAuthStore((state) => state.token); 
 
-
-      
-  const createBene = async (nombre, apellido, dni, cuil, telefono) => {
-        try {
-          const response = await fetch('http://localhost:9000/api/beneficiarios', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, apellido, dni, cuil, telefono }),
-          });
-
-          if (!response.ok) throw new Error('Error al crear beneficiario');
-
-          const data = await response.json();
-        } catch (error) {
-          console.error('Login error:', error);
+  const createBene = async (
+    nombre: string,
+    apellido: string,
+    dni: string,
+    cuil: string,
+    telefono: string
+  ) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:9000/api/beneficiarios',
+        { nombre, apellido, dni, cuil, telefono }, // <-- los datos van aquí
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
+
+      if (response.status < 200 || response.status >= 300) throw new Error('Error al crear beneficiario');
+      // const data = response.data;
+    } catch (error) {
+      console.error('Login error:', error);
     }
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -42,6 +53,16 @@ const ModalBeneficiario: React.FC<ModalBeneficiarioProps> = ({ isOpen, onClose, 
     } catch (error) {
       console.error('Error al crear beneficiario:', error);
     }
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setNombre('');
+    setApellido('');
+    setDni('');
+    setCuil('');
+    setTelefono('');
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -85,7 +106,7 @@ const ModalBeneficiario: React.FC<ModalBeneficiarioProps> = ({ isOpen, onClose, 
 
           <label>Teléfono:</label>
           <input
-            type="number"
+            type="text"
             value={telefono}
             onChange={(e) => setTelefono(e.target.value)}
             required
@@ -93,7 +114,7 @@ const ModalBeneficiario: React.FC<ModalBeneficiarioProps> = ({ isOpen, onClose, 
 
           <div className={styles.actions}>
             <button type="submit">Agregar</button>
-            <button type="button" onClick={onClose}>Cancelar</button>
+            <button type="button" onClick={handleClose}>Cancelar</button>
           </div>
         </form>
       </div>

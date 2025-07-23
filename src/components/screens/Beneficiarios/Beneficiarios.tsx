@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import styles from './Beneficiarios.module.css';
 import { useAuthStore } from '../../../auth/store/authStore';
+import ModalBeneficiario from '../../ui/ModalBeneficiario/ModalBeneficiario'; // Importa el modal
 
 interface Beneficiario {
   id: number;
@@ -25,9 +26,6 @@ export const Beneficiarios: React.FC = () => {
   const obtenerBeneficiarios = async () => {
     try {
       const response = await axios.get('http://localhost:9000/api/beneficiarios', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       setBeneficiarios(response.data);
     } catch (error) {
@@ -54,50 +52,63 @@ export const Beneficiarios: React.FC = () => {
   };
 
   const agregarBeneficiario = () => {
-    setIsModalOpen(true); // Modal aún no implementado
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleBeneficiarioAdded = () => {
+    obtenerBeneficiarios();
   };
 
   return (
     <div className={styles.container}>
-  <h2 className={styles.title}>Beneficiarios</h2>
-  <button className={styles.addButton} onClick={agregarBeneficiario}>
-    <FaPlus /> Agregar Beneficiario
-  </button>
+      <h2 className={styles.title}>Beneficiarios</h2>
+      <button className={styles.addButton} onClick={agregarBeneficiario}>
+        <FaPlus /> Agregar Beneficiario
+      </button>
 
-  <table className={styles.table}>
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>DNI</th>
-        <th>CUIL</th>
-        <th>Teléfono</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {beneficiarios.map((b) => (
-        <tr key={b.id}>
-          <td>{b.nombre}</td>
-          <td>{b.apellido}</td>
-          <td>{b.dni}</td>
-          <td>{b.cuil}</td>
-          <td>{b.telefono}</td>
-          <td className={styles.actions}>
-            <FaEdit
-              className={styles.editIcon}
-              onClick={() => editarBeneficiario(b.id)}
-            />
-            <FaTrash
-              className={styles.deleteIcon}
-              onClick={() => eliminarBeneficiario(b.id)}
-            />
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>CUIL</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {beneficiarios.map((b) => (
+            <tr key={b.id}>
+              <td>{b.nombre}</td>
+              <td>{b.apellido}</td>
+              <td>{b.dni}</td>
+              <td>{b.cuil}</td>
+              <td>{b.telefono}</td>
+              <td className={styles.actions}>
+                <FaEdit
+                  className={styles.editIcon}
+                  onClick={() => editarBeneficiario(b.id)}
+                />
+                <FaTrash
+                  className={styles.deleteIcon}
+                  onClick={() => eliminarBeneficiario(b.id)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
+      <ModalBeneficiario
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onBeneficiarioAdded={handleBeneficiarioAdded}
+      />
+    </div>
   );
 };
