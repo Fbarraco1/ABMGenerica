@@ -5,6 +5,8 @@ import { Register } from '../auth/pages/Register/Register';
 import { Dashboard } from '../components/screens/Dashboard/Dashboard';
 import { Usuarios } from '../components/screens/Usuarios/Usuarios';
 import { Beneficiarios } from '../components/screens/Beneficiarios/Beneficiarios';
+import { Areas } from '../components/screens/RolesAreas/Areas';
+import { Roles } from '../components/screens/Roles/Roles';
 
 
 export const AppRouter = () => {
@@ -22,6 +24,12 @@ export const AppRouter = () => {
         <Route path="/" element={<Dashboard/>} />
         <Route path="/usuarios" element={<Usuarios/>} />
         <Route path="/beneficiarios" element={<Beneficiarios/>} />
+        <Route path="/areas" element={<Areas/>} />
+        <Route path="/roles" element={<Roles/>} />
+
+        
+        {/* Rutas privadas */}
+        {/* Aquí puedes agregar más rutas privadas según sea necesario */}
 
 
 

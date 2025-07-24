@@ -27,7 +27,7 @@ const ModalBeneficiario: React.FC<ModalBeneficiarioProps> = ({ isOpen, onClose, 
     try {
       const response = await axios.post(
         'http://localhost:9000/api/beneficiarios',
-        { nombre, apellido, dni, cuil, telefono }, // <-- los datos van aquí
+        { nombre, apellido, dni, cuil, telefono },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const ModalBeneficiario: React.FC<ModalBeneficiarioProps> = ({ isOpen, onClose, 
       if (response.status < 200 || response.status >= 300) throw new Error('Error al crear beneficiario');
       // const data = response.data;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('error:', error);
     }
   }
   const handleSubmit = async (e: React.FormEvent) => {

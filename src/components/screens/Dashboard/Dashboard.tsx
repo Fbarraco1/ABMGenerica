@@ -33,9 +33,15 @@ const dashboardItems = [
     route: '/grupos-familiares',
   },
   {
-    title: 'Roles y Áreas',
-    description: 'Gestionar roles de usuarios y las áreas correspondientes.',
-    route: '/roles-areas',
+    title: 'Áreas',
+    description: 'Gestionar las áreas correspondientes.',
+    route: '/areas',
+  },
+    
+  {
+    title: 'Roles',
+    description: 'Gestionar roles de usuarios y sus áreas correspondientes.',
+    route: '/roles',
   },
 ];
 
